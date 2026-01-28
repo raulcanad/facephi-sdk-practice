@@ -2,7 +2,7 @@
 // FACE PHI SDK SIMULATOR - Práctica Técnica
 // ============================================
 
-console.log('🔧 Facephi SDK Simulator iniciado');
+console.log(' Facephi SDK Simulator iniciado');
 
 class FacephiSDKSimulator {
     constructor() {
@@ -36,10 +36,10 @@ class FacephiSDKSimulator {
     // ========== SECCIÓN CÁMARA ==========
     async startCamera() {
         try {
-            this.debug('🔍 Solicitando permisos de cámara...', 'info');
+            this.debug(' Solicitando permisos de cámara...', 'info');
             
             if (this.isCameraActive) {
-                this.debug('⚠️ La cámara ya está activa', 'warning');
+                this.debug(' La cámara ya está activa', 'warning');
                 this.updateStatus('cameraStatus', 'Cámara ya activa', 'warning');
                 return;
             }
@@ -63,30 +63,30 @@ class FacephiSDKSimulator {
             }
 
             if (scenario === 'success') {
-                this.debug('✅ Permisos de cámara concedidos', 'info');
+                this.debug('Permisos de cámara concedidos', 'info');
                 
                 // En un caso real, aquí iría navigator.mediaDevices.getUserMedia()
                 this.isCameraActive = true;
                 document.getElementById('camera').style.borderColor = '#27ae60';
                 
                 this.updateStatus('cameraStatus', 
-                    '✅ Cámara activada - Lista para captura', 
+                    ' Cámara activada - Lista para captura', 
                     'success'
                 );
                 
-                this.debug('📹 Stream de cámara iniciado', 'info');
+                this.debug(' Stream de cámara iniciado', 'info');
                 
             } else {
-                const errorMsg = `❌ Error de cámara: ${scenarios[scenario].message}`;
+                const errorMsg = ` Error de cámara: ${scenarios[scenario].message}`;
                 this.debug(errorMsg, 'error');
                 this.updateStatus('cameraStatus', errorMsg, 'error');
                 throw new Error(scenarios[scenario].message);
             }
 
         } catch (error) {
-            this.debug(`❌ Error en startCamera: ${error.message}`, 'error');
+            this.debug(` Error en startCamera: ${error.message}`, 'error');
             this.updateStatus('cameraStatus', 
-                `❌ Error: ${error.message}`, 
+                ` Error: ${error.message}`, 
                 'error'
             );
         }
@@ -94,13 +94,13 @@ class FacephiSDKSimulator {
 
     async captureSelfie() {
         if (!this.isCameraActive) {
-            this.debug('⚠️ Primero activa la cámara', 'warning');
+            this.debug(' Primero activa la cámara', 'warning');
             this.updateStatus('cameraStatus', 'Activa la cámara primero', 'warning');
             return;
         }
 
-        this.debug('🔄 Iniciando captura de selfie...', 'info');
-        this.updateStatus('cameraStatus', '🔄 Procesando selfie...', 'info');
+        this.debug(' Iniciando captura de selfie...', 'info');
+        this.updateStatus('cameraStatus', ' Procesando selfie...', 'info');
 
         // Simulación de procesamiento Facephi
         await this.delay(1500);
@@ -110,40 +110,40 @@ class FacephiSDKSimulator {
                 success: true,
                 score: 0.95,
                 liveness: true,
-                message: '✅ Selfie válido - Alta confianza',
+                message: ' Selfie válido - Alta confianza',
                 details: 'Liveness detectado, calidad excelente'
             },
             {
                 success: true,
                 score: 0.82,
                 liveness: true,
-                message: '✅ Selfie válido - Calidad media',
+                message: ' Selfie válido - Calidad media',
                 details: 'Liveness detectado, iluminación mejorable'
             },
             {
                 success: false,
                 score: 0.45,
                 liveness: false,
-                message: '❌ Selfie rechazado - Posible ataque',
+                message: ' Selfie rechazado - Posible ataque',
                 details: 'No se detectó liveness, posible foto de foto'
             },
             {
                 success: false,
                 score: 0.30,
                 liveness: false,
-                message: '❌ Selfie rechazado - Múltiples rostros',
+                message: ' Selfie rechazado - Múltiples rostros',
                 details: 'Se detectaron múltiples rostros en la imagen'
             }
         ];
 
         const result = results[Math.floor(Math.random() * results.length)];
         
-        this.debug(`📊 Resultado selfie: Score ${result.score}, Liveness: ${result.liveness}`, 
+        this.debug(` Resultado selfie: Score ${result.score}, Liveness: ${result.liveness}`, 
                    result.success ? 'info' : 'warning');
         
         const statusMessage = `
             ${result.message}<br>
-            <small>Score: ${result.score} | Liveness: ${result.liveness ? '✅' : '❌'}</small><br>
+            <small>Score: ${result.score} | Liveness: ${result.liveness ? 'V' : 'X'}</small><br>
             <small>${result.details}</small>
         `;
         
@@ -165,14 +165,14 @@ class FacephiSDKSimulator {
         const fileInput = document.getElementById('documentInput');
         
         if (!fileInput.files.length) {
-            this.debug('⚠️ No se seleccionó ningún documento', 'warning');
+            this.debug(' No se seleccionó ningún documento', 'warning');
             this.updateStatus('documentStatus', 'Selecciona un documento primero', 'warning');
             return;
         }
 
         const file = fileInput.files[0];
-        this.debug(`📄 Procesando documento: ${file.name} (${(file.size/1024).toFixed(2)} KB)`, 'info');
-        this.updateStatus('documentStatus', '🔄 Analizando documento...', 'info');
+        this.debug(` Procesando documento: ${file.name} (${(file.size/1024).toFixed(2)} KB)`, 'info');
+        this.updateStatus('documentStatus', ' Analizando documento...', 'info');
 
         await this.delay(2000);
 
@@ -187,19 +187,19 @@ class FacephiSDKSimulator {
         const result = documentTypes[Math.floor(Math.random() * documentTypes.length)];
         
         if (result.valid) {
-            this.debug(`✅ Documento válido detectado: ${result.type} (${result.country})`, 'info');
+            this.debug(`Documento válido detectado: ${result.type} (${result.country})`, 'info');
             
             const statusMessage = `
-                ✅ Documento válido<br>
+                Documento válido<br>
                 <small>Tipo: ${result.type} | País: ${result.country}</small><br>
                 <small>Fecha verificación: ${new Date().toLocaleDateString('es-ES')}</small>
             `;
             
             this.updateStatus('documentStatus', statusMessage, 'success');
         } else {
-            this.debug(`❌ Documento inválido: ${result.type}`, 'warning');
+            this.debug(`Documento inválido: ${result.type}`, 'warning');
             this.updateStatus('documentStatus', 
-                `❌ ${result.type}<br><small>Revisa que el documento sea válido y esté en buen estado</small>`, 
+                ` ${result.type}<br><small>Revisa que el documento sea válido y esté en buen estado</small>`, 
                 'error'
             );
         }
@@ -224,7 +224,7 @@ class FacephiSDKSimulator {
         };
         
         this.logAPIResponse(200, response);
-        this.debug(`✅ Verificación completada: ID ${response.verification_id}`, 'info');
+        this.debug(` Verificación completada: ID ${response.verification_id}`, 'info');
     }
 
     async simulateStatusAPI() {
@@ -242,7 +242,7 @@ class FacephiSDKSimulator {
         };
         
         this.logAPIResponse(200, response);
-        this.debug(`📊 Estado consultado: ${status} (${response.progress}%)`, 'info');
+        this.debug(` Estado consultado: ${status} (${response.progress}%)`, 'info');
     }
 
     async simulateErrorAPI() {
@@ -259,7 +259,7 @@ class FacephiSDKSimulator {
         
         const error = errors[Math.floor(Math.random() * errors.length)];
         this.logAPIResponse(error.code, { error: error.message }, true);
-        this.debug(`❌ Error API ${error.code}: ${error.message}`, 'error');
+        this.debug(` Error API ${error.code}: ${error.message}`, 'error');
     }
 
     // ========== HERRAMIENTAS DEBUG ==========
@@ -289,18 +289,18 @@ class FacephiSDKSimulator {
         
         const error = errors[Math.floor(Math.random() * errors.length)];
         
-        this.debug(`🐛 Error simulado: ${error.name}`, 'error');
-        this.debug(`💡 Mensaje: ${error.message}`, 'warning');
-        this.debug(`🔧 Solución sugerida: ${error.solution}`, 'info');
+        this.debug(` Error simulado: ${error.name}`, 'error');
+        this.debug(` Mensaje: ${error.message}`, 'warning');
+        this.debug(` Solución sugerida: ${error.solution}`, 'info');
         
         this.updateStatus('cameraStatus', 
-            `🐛 Error ${error.name}: ${error.message}`, 
+            ` Error ${error.name}: ${error.message}`, 
             'error'
         );
     }
 
     async testPermissions() {
-        this.debug('🔍 Testeando permisos del navegador...', 'info');
+        this.debug(' Testeando permisos del navegador...', 'info');
         
         const permissions = [
             { name: 'camera', status: 'granted' },
@@ -315,7 +315,7 @@ class FacephiSDKSimulator {
         });
         
         this.updateStatus('cameraStatus', 
-            '🔍 Test permisos completado - Ver consola', 
+            ' Test permisos completado - Ver consola', 
             'info'
         );
     }
@@ -342,7 +342,7 @@ class FacephiSDKSimulator {
 
     logAPIResponse(statusCode, data, isError = false) {
         const statusClass = statusCode >= 200 && statusCode < 300 ? 'success' : 'error';
-        const icon = isError ? '❌' : '✅';
+        const icon = isError ? 'X' : 'V';
         
         const logEntry = `
             <div class="api-response ${statusClass}">
@@ -374,5 +374,5 @@ function simulateCommonError() { facephiSDK.simulateCommonError(); }
 function testPermissions() { facephiSDK.testPermissions(); }
 function clearConsole() { 
     document.getElementById('consoleContent').innerHTML = '';
-    facephiSDK.debug('🧹 Consola limpiada', 'info');
+    facephiSDK.debug(' Consola limpiada', 'info');
 }
