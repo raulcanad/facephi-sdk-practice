@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FacephiSDK</string>
+    <string name="title_activity_main">FacephiSDK</string>
+    <string name="package_name">com.facephi.sdk</string>
+    <string name="custom_url_scheme">com.facephi.sdk</string>
+</resources>

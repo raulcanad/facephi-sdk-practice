@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facephi SDK Simulator - Práctica Técnica</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-id-card"></i> Facephi SDK Simulator</h1>
+            <p class="subtitle">Simulación práctica para integración de SDK biométrico</p>
+        </header>
+
+        <div class="sdk-section">
+            <h2><i class="fas fa-camera"></i> 1. Verificación Facial (Selphi)</h2>
+            <div class="camera-container">
+                <video id="camera" autoplay playsinline></video>
+                <div class="camera-controls">
+                    <button onclick="startCamera()" class="btn btn-primary">
+                        <i class="fas fa-video"></i> Activar Cámara
+                    </button>
+                    <button onclick="captureSelfie()" class="btn btn-success">
+                        <i class="fas fa-camera-retro"></i> Capturar Selfie
+                    </button>
+                    <button onclick="stopCamera()" class="btn btn-danger">
+                        <i class="fas fa-stop"></i> Detener Cámara
+                    </button>
+                </div>
+                <div id="cameraStatus" class="status-message">Cámara desactivada</div>
+            </div>
+        </div>
+
+        <div class="sdk-section">
+            <h2><i class="fas fa-file-alt"></i> 2. Verificación Documento (SelphID)</h2>
+            <div class="document-container">
+                <div class="file-upload">
+                    <label for="documentInput" class="file-label">
+                        <i class="fas fa-upload"></i> Seleccionar Documento
+                    </label>
+                    <input type="file" id="documentInput" accept="image/*, .pdf" hidden>
+                    <span id="fileName">Ningún archivo seleccionado</span>
+                </div>
+                <button onclick="scanDocument()" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Escanear Documento
+                </button>
+                <div id="documentStatus" class="status-message">Esperando documento...</div>
+                <div id="documentPreview" class="preview-container"></div>
+            </div>
+        </div>
+
+        <div class="sdk-section">
+            <h2><i class="fas fa-cloud"></i> 3. Llamadas API Facephi</h2>
+            <div class="api-container">
+                <div class="api-controls">
+                    <button onclick="simulateVerificationAPI()" class="btn btn-api">
+                        <i class="fas fa-check-circle"></i> POST /verify
+                    </button>
+                    <button onclick="simulateStatusAPI()" class="btn btn-api">
+                        <i class="fas fa-info-circle"></i> GET /status
+                    </button>
+                    <button onclick="simulateErrorAPI()" class="btn btn-api">
+                        <i class="fas fa-exclamation-triangle"></i> Simular Error
+                    </button>
+                </div>
+                <div class="api-log">
+                    <h3><i class="fas fa-history"></i> Log de API</h3>
+                    <div id="apiLog" class="log-content">
+                        <!-- Los logs aparecerán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="debug-section">
+            <h2><i class="fas fa-bug"></i> 4. Consola de Debugging</h2>
+            <div class="debug-controls">
+                <button onclick="clearConsole()" class="btn btn-warning">
+                    <i class="fas fa-trash"></i> Limpiar Consola
+                </button>
+                <button onclick="simulateCommonError()" class="btn btn-danger">
+                    <i class="fas fa-exclamation-circle"></i> Simular Error Común
+                </button>
+                <button onclick="testPermissions()" class="btn btn-info">
+                    <i class="fas fa-shield-alt"></i> Verificar Permisos
+                </button>
+            </div>
+            <div id="debugConsole" class="console-output">
+                <div class="console-header">
+                    <span>Consola Browser ></span>
+                    <small>Los mensajes aparecerán aquí y en la consola real (F12)</small>
+                </div>
+                <div id="consoleContent"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Simulador para práctica técnica - Facephi SDK Integration</p>
+            <p class="timestamp" id="currentTime"></p>
+        </footer>
+    </div>
+
+    <script src="sdk-simulator.js"></script>
+    <script>
+        // Actualizar hora
+        function updateTime() {
+            document.getElementById('currentTime').textContent = 
+                new Date().toLocaleString('es-ES');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Manejar selección de archivo
+        document.getElementById('documentInput').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Ningún archivo seleccionado';
+            document.getElementById('fileName').textContent = fileName;
+            
+            // Mostrar preview si es imagen
+            if (e.target.files[0] && e.target.files[0].type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('documentPreview');
+                    preview.innerHTML = `<img src="${event.target.result}" alt="Documento preview">`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    </script>
+</body>
+</html>
