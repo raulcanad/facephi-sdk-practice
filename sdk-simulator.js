@@ -155,7 +155,7 @@ class FacephiSDKSimulator {
         if (this.isCameraActive) {
             this.isCameraActive = false;
             document.getElementById('camera').style.borderColor = '#ddd';
-            this.debug('📹 Cámara detenida', 'info');
+            this.debug(' Cámara detenida', 'info');
             this.updateStatus('cameraStatus', 'Cámara detenida', 'info');
         }
     }
